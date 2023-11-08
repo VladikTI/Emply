@@ -1,18 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Paper, List, ListItem, ListItemText, Button,  } from '@mui/material';
-import Box from "@mui/material/Box";
-import Tab from "@mui/material/Tab";
+import {Box ,Tab} from "@mui/material";
+import {Tabs, TabList, TabPanel} from "react-tabs";
+import { TabContext } from '@mui/lab';
 import { useNavigate } from "react-router-dom"
 //import Tabs from "@mui/material/Tabs";
 
-// стили
+//Титульник страницы
+document.title = 'Вакансии';
+
+// стиль для кнопок
 const buttonStyle = {
     backgroundColor: '#060764', // Задаем цвет фона кнопки
     color: 'white', // Задаем цвет текста на кнопке (белый)
     marginRight: '10px' // отступ
 };
+// стиль для box
+const boxStyle = {
+    height: "100%", // выоста
+    flex: "auto", // меняет свой размер в зависимости от содержимого
+    backgroundColor:  '#060764', // Задаем цвет фона
+    color: 'white', // задаем цвет текста
+    textAlign:'center' // центрируем текст
+}
 
-//Вакансии
+//Список Вакансий
 const employees = [
     {
         company: "Компания A",
@@ -34,25 +46,27 @@ const employees = [
     }
 ];
 
-
-//Титульник страницы
-document.title = 'Вакансии';
-
 export default function UsersPage() {
     const navigate = useNavigate();
     // в <list> выводим список вакансий employees с использованием map
     return (
         <div>
-
-            <Box sx={{ height: "100%", flex: "auto", backgroundColor: "#060764", color: "white", textAlign:'center'}} >
+            <Box style = {boxStyle} >
                 <Tab label="Работа твоей мечты, ага, щас"  />
+                <TabList>
+                    <Tab label="Вакансии" value="1" />
+                    <Tab label="Поданные заявки" value="2" />
+                </TabList>
             </Box>
-            <Typography variant="h4">Список вакансий</Typography>
+
+                <Typography variant="h4">Список вакансий</Typography>
             <List>
 
                 {employees.map((employees, index) => (
                     <ListItem
                         key={index}
+                        // теперт каждая вакансия кликабельна
+                        onClick={() => navigate(`/vacancy_details`)}
                         >
                         <ListItemText
                             primary={
@@ -66,15 +80,10 @@ export default function UsersPage() {
                                         Описание: {employees.description} <br />
                                         Навыки:   {employees.skills.join(", ")}
                                         </div>
+
                                       }
 
                         />
-                        <Button
-                            style={buttonStyle}
-                            onClick={() => navigate(`/vacancy_details`)} // Переход на страницу vacancy_details
-                        >
-                            Подробнее
-                        </Button>
 
                         <Button style={buttonStyle} onClick={() => {}}>
                             Подать заявку
