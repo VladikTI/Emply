@@ -1,12 +1,10 @@
-import uuid
-
 from fastapi import Depends
 from fastapi_users.authentication.strategy.db import AccessTokenDatabase, DatabaseStrategy
 from fastapi_users.authentication import CookieTransport, AuthenticationBackend
 
-from auth.database import AccessToken, get_access_token_db
+from src.auth.utils import AccessToken, get_access_token_db
 
-cookie_transport = CookieTransport(cookie_max_age=3600)
+cookie_transport = CookieTransport(cookie_name="bonds", cookie_max_age=3600)
 
 
 def get_database_strategy(
