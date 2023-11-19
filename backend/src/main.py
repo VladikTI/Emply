@@ -29,7 +29,7 @@ app.include_router(
     prefix="/user/reg",
     tags=["auth"],
 )
-
+'''
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
     prefix="/company/auth",
@@ -55,3 +55,4 @@ app.include_router(
 )
 
 current_user = fastapi_users.current_user()
+'''
