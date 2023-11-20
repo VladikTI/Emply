@@ -21,7 +21,8 @@
     "react-tabs": "^6.0.2",
     "react-virtualized-auto-sizer": "^1.0.20",
     "react-window": "^1.8.9",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zustand": "^4.4.6"
   },
   "scripts": {
     "start": "WATCHPACK_POLLING=true react-scripts start",

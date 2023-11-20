@@ -1,11 +1,11 @@
-import { Alert, Box, Button, Container, TextField, Typography } from "@mui/material";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import { axiosInstance } from "../axiosInstance.js";
+import {Alert, Box, Button, Container, TextField, Typography} from "@mui/material";
+import {Navigate, useNavigate} from "react-router-dom";
+import {useContext, useEffect, useState} from "react";
+import {axiosInstance} from "../axiosInstance.js";
 
-import { authContext, AuthStatus } from "../contexts/authContext";
+import {authContext, AuthStatus} from "../contexts/authContext";
 
-import { useTheme } from '@mui/material/styles';
+import {useTheme} from '@mui/material/styles';
 
 export default function Login() {
     const authCont = useContext(authContext);
@@ -14,7 +14,9 @@ export default function Login() {
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
 
-    useEffect(() => {document.title = "логин"}, []);
+    useEffect(() => {
+        document.title = "логин"
+    }, []);
 
     const onSubmit = async (event) => {
         event.preventDefault();
@@ -31,7 +33,9 @@ export default function Login() {
         // TODO: send the login request
         console.log("Logging in...");
         authCont.login(login, password)
-            .then(response => {navigate("/company")})
+            .then(response => {
+                navigate("/company")
+            })
             .catch(error => console.error(error));
     }
 

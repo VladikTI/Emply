@@ -3,6 +3,7 @@ import { Typography, Paper, List, ListItem, ListItemText, Button, } from '@mui/m
 import {Box ,Tab} from "@mui/material";
 import {Tabs, TabList, TabPanel} from "react-tabs";
 import { useNavigate } from "react-router-dom"
+import data from '../data.json';
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -28,45 +29,8 @@ export const boxStyle = {
     textAlign:'center' // центрируем текст
 }
 
+const employees = Array.from(data.employees);
 
-//Список Вакансий
-export const employees = [
-    {
-        //id - нужны для перехода, по идее лучше вытаскивать из БД
-        id: 1234,
-        company: "Компания A",
-        salary: 65000,
-        work_experience: "2 года.",
-        post: "Джун фронтендер",
-        skills: ["JavaScript", "React", "Node.js"],
-        duty: ["Говорить что у вас самый лучший босс","приносить жижу для вейпа раз в неделю",
-            "Любые возражения не воспринимаются"],
-        requirements : ["Быть хорошим мальчиком", "Желание стать гигачадом", "Пуси бои не принимаются"],
-        conditions: ["Уважать босса", "Удаленная работа"]
-    },
-    {
-        id: 12345,
-        company: "Компания B",
-        salary: 60000,
-        work_experience: "не указан",
-        post: "Стажер на фронтенд",
-        skills: ["Python", "Django", "SQL"],
-        duty: ["Говорить, что у вас самый лучший босс","приносить жижу для вейпа раз в неделю"],
-        requirements:  ["Абоба"],
-        conditions: ["Уважать босса", "Удаленная работа"]
-    },
-    {
-        id: 123456,
-        company: "Компания C",
-        salary: 55000,
-        work_experience: "не указан",
-        post: "Стажер",
-        skills: ["Java", "Spring", "Hibernate"],
-        duty: ["Говорить что у вас самый лучший босс","приносить жижу для вейпа раз в неделю"],
-        requirements: ["Биба"],
-        conditions: ["Уважать босса", "Удаленная работа"]
-    }
-];
 // функция для вывода содержимого каждого таба
 function GetTab({tabName}) {
     const navigate = useNavigate();

@@ -1,3 +1,4 @@
 .idea/
 */__pycache__
 venv
+/pvo-frontend/node_modules/

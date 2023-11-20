@@ -11,7 +11,7 @@ import Company from "./routes/company";
 import UserPrivateWrapper from './userPrivateWrapper';
 import AuthProvider from './contexts/authContext';
 import UsersPage from "./routes/usersPage";
-import Vacancy_details from "./routes/vacancy_details";
+import VacancyDetails from "./routes/VacancyDetails";
 
 const dayjs = require('dayjs')
 const localizedFormat = require('dayjs/plugin/localizedFormat')
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
             {
                 //:vacancyId - параметр идентификатор вакансии
                 path: "vacancy_details/:vacancyId",
-                element: <Vacancy_details/>,
+                element: <VacancyDetails/>,
             },
         ]
     },

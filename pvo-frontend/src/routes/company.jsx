@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -10,11 +10,11 @@ import axios from "axios";
 import {useTheme} from '@mui/material/styles';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 
 function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
+    const {children, value, index, ...other} = props;
 
     return (
         <div
@@ -25,7 +25,7 @@ function CustomTabPanel(props) {
             {...other}
         >
             {value === index && (
-                <Box sx={{ p: 3 }}>
+                <Box sx={{p: 3}}>
                     <Typography>{children}</Typography>
                 </Box>
             )}
@@ -46,7 +46,7 @@ function a11yProps(index) {
     };
 }
 
-export default function Company(){
+export default function Company() {
     const navigate = useNavigate();
     return (
         <Box id="app" sx={{height: "100%", width: "100%", display: "flex"}}>
@@ -78,7 +78,9 @@ function BasicTabs() {
 
     const theme = useTheme();
 
-    useEffect(() => {document.title = "Пора в отпуск: административная панель"}, []);
+    useEffect(() => {
+        document.title = "Пора в отпуск: административная панель"
+    }, []);
 
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
@@ -100,9 +102,11 @@ function BasicTabs() {
         setSnackbarMessage("Сотрудник успешно добавлен");
         setSnackbarOpen(true);
         axios
-            .post('http://127.0.0.1:3000/api/add_employee', {username: username, password: password, name: name,
-            surname: surname, patronymic: patronymic, position: position, available_vacation: available_vacation,
-            unit_id: unit_id, role_id: role_id}, {
+            .post('http://127.0.0.1:3000/api/add_employee', {
+                username: username, password: password, name: name,
+                surname: surname, patronymic: patronymic, position: position, available_vacation: available_vacation,
+                unit_id: unit_id, role_id: role_id
+            }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -139,8 +143,8 @@ function BasicTabs() {
 
     //Можно более аккуратно цвета настроить через стиль, но я этим сейчас заниматься не буду // 25.10.2023 6:43
     return (
-        <Box sx={{ height: "100%", flex: "auto"}}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{height: "100%", flex: "auto"}}>
+            <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                 <Tabs textColor="secondary" value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="Управление вакансиями" {...a11yProps(0)} />
                     <Tab label="Управление HR-сотрудниками" {...a11yProps(1)} />
@@ -149,20 +153,20 @@ function BasicTabs() {
             <CustomTabPanel color={theme.palette.blue.dark} value={value} index={0}>
                 {error && <Alert severity="error" sx={{my: 2}}>{error}</Alert>}
                 <form>
-                <Box marginBottom={2}>
-                    <TextField
-                        label="Название отдела"
-                        variant="outlined"
-                        fullWidth
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                </Box>
+                    <Box marginBottom={2}>
+                        <TextField
+                            label="Название отдела"
+                            variant="outlined"
+                            fullWidth
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </Box>
                 </form>
                 <form><Button
                     variant="contained"
                     color="primary"
-                    style={{ marginLeft: "auto", marginRight: "0" }}
+                    style={{marginLeft: "auto", marginRight: "0"}}
                     onClick={handleAddUnit}
                 >
                     Добавить
@@ -172,13 +176,16 @@ function BasicTabs() {
             <CustomTabPanel value={value} index={1}>
                 {error && <Alert severity="error" sx={{my: 2}}>{error}</Alert>}
                 <form>
-                    <Box sx={{ width: "100%" }}>
+                    <Box sx={{width: "100%"}}>
                         {/* ... остальной код ... */}
                         <Snackbar
                             open={snackbarOpen}
                             autoHideDuration={6000}
                             onClose={handleSnackbarClose}
-                            anchorOrigin={{ vertical: "center", horizontal: "center" }} // Установите положение Snackbar по центру
+                            anchorOrigin={{
+                                vertical: "center",
+                                horizontal: "center"
+                            }} // Установите положение Snackbar по центру
                         >
                             <MuiAlert
                                 elevation={6}
@@ -200,59 +207,59 @@ function BasicTabs() {
                         />
                     </Box>
                     <Box marginBottom={2}>
-                    <TextField
-                        label="Имя"
-                        variant="outlined"
-                        fullWidth
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                    </Box>
-                        <Box marginBottom={2}>
-                    <TextField
-                        label="Отчество"
-                        variant="outlined"
-                        fullWidth
-                        value={patronymic}
-                        onChange={(e) => setPatronymic(e.target.value)}
-                    />
-                        </Box>
-                    <Box marginBottom={2}>
-                    <TextField
-                        label="Должность"
-                        variant="outlined"
-                        fullWidth
-                        value={position}
-                        onChange={(e) => setPosition(e.target.value)}
-                    />
+                        <TextField
+                            label="Имя"
+                            variant="outlined"
+                            fullWidth
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
                     </Box>
                     <Box marginBottom={2}>
-                    <TextField
-                        label="Логин"
-                        variant="outlined"
-                        fullWidth
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
+                        <TextField
+                            label="Отчество"
+                            variant="outlined"
+                            fullWidth
+                            value={patronymic}
+                            onChange={(e) => setPatronymic(e.target.value)}
+                        />
                     </Box>
                     <Box marginBottom={2}>
-                    <TextField
-                        label="Пароль"
-                        variant="outlined"
-                        fullWidth
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
+                        <TextField
+                            label="Должность"
+                            variant="outlined"
+                            fullWidth
+                            value={position}
+                            onChange={(e) => setPosition(e.target.value)}
+                        />
                     </Box>
                     <Box marginBottom={2}>
-                    <TextField
-                        label="Доступные дни отпуска"
-                        variant="outlined"
-                        fullWidth
-                        value={available_vacation}
-                        onChange={(e) => setAvailableVacation(e.target.value)}
-                    />
+                        <TextField
+                            label="Логин"
+                            variant="outlined"
+                            fullWidth
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </Box>
+                    <Box marginBottom={2}>
+                        <TextField
+                            label="Пароль"
+                            variant="outlined"
+                            fullWidth
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </Box>
+                    <Box marginBottom={2}>
+                        <TextField
+                            label="Доступные дни отпуска"
+                            variant="outlined"
+                            fullWidth
+                            value={available_vacation}
+                            onChange={(e) => setAvailableVacation(e.target.value)}
+                        />
                     </Box>
                     <Box marginBottom={2}>
                         <Autocomplete
@@ -261,15 +268,14 @@ function BasicTabs() {
                                 setValue1(newValue1);
                                 if (newValue1 === "Сотрудник") {
                                     setRoleId(2)
-                                }
-                                else if (newValue1 === "Руководитель") {
+                                } else if (newValue1 === "Руководитель") {
                                     setRoleId(1)
                                 }
                             }}
                             id="combo-box-demo"
                             options={roles}
-                            style={{ width: 300 }}
-                            renderInput={(params) => <TextField {...params} label="Роль" variant="outlined" />}
+                            style={{width: 300}}
+                            renderInput={(params) => <TextField {...params} label="Роль" variant="outlined"/>}
 
                         />
                     </Box>
@@ -283,8 +289,8 @@ function BasicTabs() {
                             }}
                             id="combo-box-demo"
                             options={units}
-                            style={{ width: 300 }}
-                            renderInput={(params) => <TextField {...params} label="Отдел" variant="outlined" />}
+                            style={{width: 300}}
+                            renderInput={(params) => <TextField {...params} label="Отдел" variant="outlined"/>}
 
                         />
                     </Box>
@@ -292,7 +298,7 @@ function BasicTabs() {
                 <form><Button
                     variant="contained"
                     color="primary"
-                    style={{ marginLeft: "auto", marginRight: "0" }}
+                    style={{marginLeft: "auto", marginRight: "0"}}
                     onClick={handleAddEmployee}
                 >
                     Добавить
