@@ -43,7 +43,8 @@ const router = createBrowserRouter([
                 element: <UsersPage/>,
             },
             {
-                path: "vacancy_details",
+                //:vacancyId - параметр идентификатор вакансии
+                path: "vacancy_details/:vacancyId",
                 element: <Vacancy_details/>,
             },
         ]
