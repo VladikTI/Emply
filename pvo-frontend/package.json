@@ -3,11 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.14",
     "@mui/material": "^5.14.12",
     "@mui/x-date-pickers": "^6.16.2",
+    "antd": "^5.11.5",
     "axios": "^1.5.1",
     "dayjs": "^1.11.10",
     "mobx": "^6.10.2",
@@ -18,11 +20,9 @@
     "react-router": "^6.16.0",
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
-    "react-tabs": "^6.0.2",
     "react-virtualized-auto-sizer": "^1.0.20",
     "react-window": "^1.8.9",
-    "web-vitals": "^2.1.4",
-    "zustand": "^4.4.6"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "WATCHPACK_POLLING=true react-scripts start",

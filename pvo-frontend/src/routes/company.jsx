@@ -1,310 +1,271 @@
-import * as React from 'react';
-import {useState, useEffect} from 'react';
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import {Alert, Autocomplete, Button, TextField} from "@mui/material";
-import axios from "axios";
-import {useTheme} from '@mui/material/styles';
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import {useNavigate} from "react-router-dom";
-
-
-function CustomTabPanel(props) {
-    const {children, value, index, ...other} = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box sx={{p: 3}}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-}
-
-CustomTabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
+import React, { useState } from 'react';
+import yandexLogo from '../images/yandex.png';
+import photo from '../images/avatar.png';
+import {
+    DesktopOutlined,
+    FileOutlined,
+    TeamOutlined,
+    UserOutlined,
+} from '@ant-design/icons';
+import { Breadcrumb, Layout, Menu, theme, Table } from 'antd';
+const { Header, Content, Footer, Sider } = Layout;
+function getItem(label, key, icon, children) {
     return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
+        key,
+        icon,
+        children,
+        label,
     };
 }
+const items = [
+    getItem('Моя Компания', '1', <DesktopOutlined />),
+    getItem('Сотрудники', 'sub1', <UserOutlined />, [
+        getItem('Светлана Беглова', '2'),
+        getItem('Кирилл Десятниченко', '3'),
+        getItem('Мария Сорокина', '4'),
+        getItem('Ольга Глатко', '5'),
+    ]),
+    getItem('Команды', 'sub2', <TeamOutlined />, [
+        getItem('Яндекс.Такси', '6'),
+        getItem('Яндекс.Карты', '7'),
+    ]),
+    getItem('Вакансии', '8', <FileOutlined />),
+];
 
-export default function Company() {
-    const navigate = useNavigate();
-    return (
-        <Box id="app" sx={{height: "100%", width: "100%", display: "flex"}}>
-            <BasicTabs/>
-        </Box>
-    );
-}
+const columns = [
+    {
+        title: 'ФИО',
+        dataIndex: 'name',
+        key: 'name',
+    },
+    {
+        title: 'Должность',
+        dataIndex: 'position',
+        key: 'position',
+    },
+];
 
-function BasicTabs() {
-    const roles = ['Руководитель', 'Сотрудник'];
-    const [units, setUnits] = useState(["Отдел 1", "Отдел 2", "Отдел 3"]);
-    const [value, setValue] = React.useState("");
-    const [value1, setValue1] = React.useState(roles[0]);
-    const [value2, setValue2] = React.useState(units[0]);
-    const token = localStorage.getItem('token');
-    const [name, setName] = useState("");
-    const [surname, setSurname] = useState("");
-    const [patronymic, setPatronymic] = useState("");
-    const [position, setPosition] = useState("");
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [unit_id, setUnitId] = useState(units[0]);
-    const [available_vacation, setAvailableVacation] = useState("");
-    const [role_id, setRoleId] = useState(roles[0]);
-    const [error, setError] = useState("");
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-    const [snackbarMessage, setSnackbarMessage] = useState("");
+const App = () => {
+    const [collapsed, setCollapsed] = useState(false);
+    const [selectedMenuItem, setSelectedMenuItem] = useState(items[0].key);
+    const [hrData, setHrData] = useState([
+        { key: '1', name: 'Светлана Беглова', position: 'Старший HR' },
+        { key: '2', name: 'Кирилл Десятниченко', position: 'Младший HR' },
+        { key: '3', name: 'Мария Сорокина', position: 'Младший HR' },
+        { key: '4', name: 'Ольга Глатко', position: 'Младший HR' },
+    ]);
 
-    const theme = useTheme();
-
-    useEffect(() => {
-        document.title = "Пора в отпуск: административная панель"
-    }, []);
-
-    const handleSnackbarClose = () => {
-        setSnackbarOpen(false);
-    };
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    }
-
-    const handleAddEmployee = async (event) => {
-        event.preventDefault();
-        if (!username || !password || !name || !surname || !patronymic || !role_id || !unit_id
-            || !available_vacation || !position) {
-            setError("Пожалуйста, заполните все поля");
-            return;
+    const handleEmployeeClick = (employeeName) => {
+        let employeeData;
+        switch (employeeName) {
+            case 'user1':
+                employeeData = { key: '2', name: 'Светлана Беглова', position: 'Старший HR' };
+                break;
+            case 'user2':
+                employeeData = { key: '3', name: 'Кирилл Десятниченко', position: 'Младший HR' };
+                break;
+            case 'user3':
+                employeeData = { key: '4', name: 'Мария Сорокина', position: 'Младший HR' };
+                break;
+            case 'user4':
+                employeeData = { key: '5', name: 'Ольга Глатко', position: 'Младший HR' };
+                break;
+            default:
+                employeeData = null;
         }
-        setError("");
-        setSnackbarSeverity("success");
-        setSnackbarMessage("Сотрудник успешно добавлен");
-        setSnackbarOpen(true);
-        axios
-            .post('http://127.0.0.1:3000/api/add_employee', {
-                username: username, password: password, name: name,
-                surname: surname, patronymic: patronymic, position: position, available_vacation: available_vacation,
-                unit_id: unit_id, role_id: role_id
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            })
-            .then((response) => {
-                // Обработка успешного ответа от сервера
-            })
-            .catch((error) => {
-                console.error('Ошибка при отправке запроса:', error);
-            });
-    };
 
-    const handleAddUnit = async (event) => {
-        if (!name) {
-            setError("Пожалуйста, заполните все поля");
-            return;
+        if (employeeData) {
+            setHrData((prevData) => [...prevData, employeeData]);
         }
-        setUnits((prevUnits) => [...prevUnits, name]);
-        setError("");
-        axios
-            .post('http://127.0.0.1:3000/api/add_unit', {name: name}, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            })
-            .then((response) => {
-                // Обработка успешного ответа от сервера
-
-            })
-            .catch((error) => {
-                console.error('Ошибка при отправке запроса:', error);
-            });
     };
 
-    //Можно более аккуратно цвета настроить через стиль, но я этим сейчас заниматься не буду // 25.10.2023 6:43
+
+    const {
+        token: { colorBgContainer },
+    } = theme.useToken();
     return (
-        <Box sx={{height: "100%", flex: "auto"}}>
-            <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-                <Tabs textColor="secondary" value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="Управление вакансиями" {...a11yProps(0)} />
-                    <Tab label="Управление HR-сотрудниками" {...a11yProps(1)} />
-                </Tabs>
-            </Box>
-            <CustomTabPanel color={theme.palette.blue.dark} value={value} index={0}>
-                {error && <Alert severity="error" sx={{my: 2}}>{error}</Alert>}
-                <form>
-                    <Box marginBottom={2}>
-                        <TextField
-                            label="Название отдела"
-                            variant="outlined"
-                            fullWidth
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                    </Box>
-                </form>
-                <form><Button
-                    variant="contained"
-                    color="primary"
-                    style={{marginLeft: "auto", marginRight: "0"}}
-                    onClick={handleAddUnit}
+        <Layout
+            style={{
+                minHeight: '100vh',
+            }}
+        >
+            <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+                <div className="demo-logo-vertical" />
+                <Menu
+                    theme="dark"
+                    defaultSelectedKeys={[selectedMenuItem]}
+                    mode="inline"
+                    onClick={({ key }) => {
+                        setSelectedMenuItem(key);
+                        if (key === '2' || key === '3' || key === '4') {
+                            handleEmployeeClick(items.find((item) => item.key === key)?.label);
+                        }
+                    }}
                 >
-                    Добавить
-                </Button>
-                </form>
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
-                {error && <Alert severity="error" sx={{my: 2}}>{error}</Alert>}
-                <form>
-                    <Box sx={{width: "100%"}}>
-                        {/* ... остальной код ... */}
-                        <Snackbar
-                            open={snackbarOpen}
-                            autoHideDuration={6000}
-                            onClose={handleSnackbarClose}
-                            anchorOrigin={{
-                                vertical: "center",
-                                horizontal: "center"
-                            }} // Установите положение Snackbar по центру
-                        >
-                            <MuiAlert
-                                elevation={6}
-                                variant="filled"
-                                severity={snackbarSeverity}
-                                onClose={handleSnackbarClose}
-                            >
-                                {snackbarMessage}
-                            </MuiAlert>
-                        </Snackbar>
-                    </Box>
-                    <Box marginBottom={2}>
-                        <TextField
-                            label="Фамилия"
-                            variant="outlined"
-                            fullWidth
-                            value={surname}
-                            onChange={(e) => setSurname(e.target.value)}
-                        />
-                    </Box>
-                    <Box marginBottom={2}>
-                        <TextField
-                            label="Имя"
-                            variant="outlined"
-                            fullWidth
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                    </Box>
-                    <Box marginBottom={2}>
-                        <TextField
-                            label="Отчество"
-                            variant="outlined"
-                            fullWidth
-                            value={patronymic}
-                            onChange={(e) => setPatronymic(e.target.value)}
-                        />
-                    </Box>
-                    <Box marginBottom={2}>
-                        <TextField
-                            label="Должность"
-                            variant="outlined"
-                            fullWidth
-                            value={position}
-                            onChange={(e) => setPosition(e.target.value)}
-                        />
-                    </Box>
-                    <Box marginBottom={2}>
-                        <TextField
-                            label="Логин"
-                            variant="outlined"
-                            fullWidth
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                    </Box>
-                    <Box marginBottom={2}>
-                        <TextField
-                            label="Пароль"
-                            variant="outlined"
-                            fullWidth
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </Box>
-                    <Box marginBottom={2}>
-                        <TextField
-                            label="Доступные дни отпуска"
-                            variant="outlined"
-                            fullWidth
-                            value={available_vacation}
-                            onChange={(e) => setAvailableVacation(e.target.value)}
-                        />
-                    </Box>
-                    <Box marginBottom={2}>
-                        <Autocomplete
-                            value={value1}
-                            onChange={(event, newValue1) => {
-                                setValue1(newValue1);
-                                if (newValue1 === "Сотрудник") {
-                                    setRoleId(2)
-                                } else if (newValue1 === "Руководитель") {
-                                    setRoleId(1)
-                                }
-                            }}
-                            id="combo-box-demo"
-                            options={roles}
-                            style={{width: 300}}
-                            renderInput={(params) => <TextField {...params} label="Роль" variant="outlined"/>}
-
-                        />
-                    </Box>
-                    <Box marginBottom={2}>
-                        <Autocomplete
-                            value={value2}
-                            onChange={(event, newValue2) => {
-                                setValue2(newValue2);
-                                const id = units.indexOf(newValue2) + 1;
-                                setUnitId(id);
-                            }}
-                            id="combo-box-demo"
-                            options={units}
-                            style={{width: 300}}
-                            renderInput={(params) => <TextField {...params} label="Отдел" variant="outlined"/>}
-
-                        />
-                    </Box>
-                </form>
-                <form><Button
-                    variant="contained"
-                    color="primary"
-                    style={{marginLeft: "auto", marginRight: "0"}}
-                    onClick={handleAddEmployee}
+                    {items.map((item) => {
+                        if (item.children) {
+                            return (
+                                <Menu.SubMenu key={item.key} icon={item.icon} title={item.label}>
+                                    {item.children.map((child) => (
+                                        <Menu.Item key={child.key} icon={child.icon}>
+                                            {child.label}
+                                        </Menu.Item>
+                                    ))}
+                                </Menu.SubMenu>
+                            );
+                        }
+                        return (
+                            <Menu.Item key={item.key} icon={item.icon}>
+                                {item.label}
+                            </Menu.Item>
+                        );
+                    })}
+                </Menu>
+            </Sider>
+            <Layout>
+                <Header
+                    style={{
+                        padding: 0,
+                        background: colorBgContainer,
+                    }}
+                />
+                <Content
+                    style={{
+                        margin: '0 16px',
+                    }}
                 >
-                    Добавить
-                </Button>
-                </form>
-            </CustomTabPanel>
-        </Box>
+                    <Breadcrumb
+                        style={{
+                            margin: '16px 0',
+                        }}
+                    >
+                        {selectedMenuItem && (
+                            <>
+                                {selectedMenuItem.split('.').map((key) => (
+                                    <Breadcrumb.Item key={key}>
+                                        {items.find((item) => item.key === key)?.label}
+                                    </Breadcrumb.Item>
+                                ))}
+                            </>
+                        )}
+                    </Breadcrumb>
+                    <div
+                        style={{
+                            padding: 24,
+                            minHeight: 360,
+                            background: colorBgContainer,
+                        }}
+                    >
+                        {selectedMenuItem === '1' && (
+                            <>
+                                <div style={{ textAlign: 'center' }}>
+                                    <img
+                                        src={yandexLogo} // Замените на путь или URL-адрес вашего логотипа Яндекса
+                                        alt="Яндекс Логотип"
+                                        style={{ maxWidth: '100%', maxHeight: '150px', marginBottom: '16px' }}
+                                    />
+                                </div>
+                                <h2>О Компании Яндекс</h2>
+                                <p>
+                                    Яндекс — российская технологическая компания, предоставляющая широкий спектр услуг и продуктов
+                                    в области интернета. Основана в 1997 году. Яндекс известен своими поисковыми системами,
+                                    онлайн-картами, сервисами такси, электронной коммерцией и другими технологическими решениями.
+                                </p>
+                                <h2>HR-сотрудники</h2>
+                                <Table dataSource={hrData} columns={columns} />
+                            </>
+                        )}
+                        {selectedMenuItem === '2' && (
+                            <>
+                                <h2>Светалана Беглова - Старший HR</h2>
+                                <img
+                                    src={photo} // Замените на путь или URL-адрес вашего логотипа Яндекса
+                                    alt="Пустой автар"
+                                    style={{ maxWidth: '100%', maxHeight: '150px', marginBottom: '16px' }}
+                                />
+                                <p>
+                                    Имя: Светалана Беглова
+                                    <br />
+                                    <br />
+                                    Должность: Старший HR
+                                    <br />
+                                    <br />
+                                    Команды: Яндекс.Такси, Яндекс.Карты
+                                </p>
+                            </>
+                        )}
+                        {selectedMenuItem === '3' && (
+                            <>
+                                <h2>Кирилл Десятниченко - Младший HR</h2>
+                                <img
+                                    src={photo} // Замените на путь или URL-адрес вашего логотипа Яндекса
+                                    alt="Пустой автар"
+                                    style={{ maxWidth: '100%', maxHeight: '150px', marginBottom: '16px' }}
+                                />
+                                <p>
+                                    Имя: Кирилл Десятниченко
+                                    <br />
+                                    <br />
+                                    Должность: Младший HR
+                                    <br />
+                                    <br />
+                                    Команды: Яндекс.Такси, Яндекс.Карты
+                                </p>
+                            </>
+                        )}
+                        {selectedMenuItem === '4' && (
+                            <>
+                                <h2>Мария Сорокина - Младший HR</h2>
+                                <img
+                                    src={photo} // Замените на путь или URL-адрес вашего логотипа Яндекса
+                                    alt="Пустой автар"
+                                    style={{ maxWidth: '100%', maxHeight: '150px', marginBottom: '16px' }}
+                                />
+                                <p>
+                                    Имя: Мария Сорокина
+                                    <br />
+                                    <br />
+                                    Должность: Младший HR
+                                    <br />
+                                    <br />
+                                    Команды: Яндекс.Такси
+                                </p>
+                            </>
+                        )}
+                        {selectedMenuItem === '5' && (
+                            <>
+                                <h2>Ольга Глатко - Младший HR</h2>
+                                <img
+                                    src={photo} // Замените на путь или URL-адрес вашего логотипа Яндекса
+                                    alt="Пустой автар"
+                                    style={{ maxWidth: '100%', maxHeight: '150px', marginBottom: '16px' }}
+                                />
+                                <p>
+                                    Имя: Ольга Глатко
+                                    <br />
+                                    <br />
+                                    Должность: Младший HR
+                                    <br />
+                                    <br />
+                                    Команды: Яндекс.Карты
+                                </p>
+                            </>
+                        )}
+                        {selectedMenuItem === '6' && (
+                            <p>Content for Яндекс.Такси</p>
+                        )}
+                        {selectedMenuItem === '7' && <p>Content for Яндекс.Карты</p>}
+                        {selectedMenuItem === '8' && <p>Content for Вакансии</p>}
+                    </div>
+                </Content>
+                <Footer
+                    style={{
+                        textAlign: 'center',
+                    }}
+                >
+                </Footer>
+            </Layout>
+        </Layout>
     );
-}
+};
+export default App;
