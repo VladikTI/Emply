@@ -1,7 +1,8 @@
 alembic
-fastapi[all]
+fastapi
 fastapi-users[sqlalchemy]
 asyncpg
 python-dotenv
 sqlalchemy
 uvicorn
+pydantic
