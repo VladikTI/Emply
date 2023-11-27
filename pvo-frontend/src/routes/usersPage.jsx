@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Typography, Paper, List, ListItem, ListItemText, Button, } from '@mui/material';
+import React, { useState } from 'react';
+import { Typography, List, ListItem, ListItemText, Button,AppBar,Toolbar } from '@mui/material';
 import {Box ,Tab} from "@mui/material";
-import {Tabs, TabList, TabPanel} from "react-tabs";
+import {Tabs} from "react-tabs";
 import { useNavigate } from "react-router-dom"
 import data from '../data.json';
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 //Титульник страницы
 document.title = 'Вакансии';
 
-//общая переменная для передачи id вакансии, useParams() не работает 19.11
 export let selectedID = 0;
 
 // стиль для кнопок
@@ -83,11 +82,8 @@ function GetTab({tabName}) {
     }
 }
 
-export default function UsersPage() {
-    const [selectedPanel, setSelectedOPanel] = useState('users')
-    // навигация по вкладкам
 
-    // для меню
+function AccountSettings () {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -97,6 +93,63 @@ export default function UsersPage() {
         setAnchorEl(null);
     };
     //
+    return (
+        <div>
+
+            <Box>
+                <Button style = {buttonStyle}
+                        onClick={handleClick}
+                >
+                    Профиль
+                    <AccountBoxIcon/>
+                </Button>
+                <Menu
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                >
+                    <MenuItem onClick={handleClose}>Мой аккаунт</MenuItem>
+                    <MenuItem onClick={handleClose}>Выйти из аккаунта</MenuItem>
+                </Menu>
+            </Box>
+        </div>
+    );
+}
+
+
+export  function ButtonAppBar() {
+    return (
+        <Box >
+            <AppBar style = {{
+                position:"static",
+                backgroundColor: "#060764",
+                color: "white"
+            }}
+            >
+                <Toolbar>
+                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                        EMPLY
+                    </Typography>
+                    <AccountSettings/>
+                </Toolbar>
+            </AppBar>
+        </Box>
+    );
+}
+
+
+
+export default function UsersPage() {
+    const [selectedPanel, setSelectedOPanel] = useState('users')
+    // навигация по вкладкам
 
     // в <list> выводим список вакансий employees с использованием map
     return (
@@ -110,34 +163,7 @@ export default function UsersPage() {
                 textAlign:'left' // центрируем текст
 
             }}>
-                <Button
-                    id="demo-positioned-button"
-                    aria-controls={open ? 'demo-positioned-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={handleClick}
-                >
-                    Меню
-                </Button>
-                <Menu
-                    //id="demo-positioned-menu"
-                    //aria-labelledby="demo-positioned-button"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                >
-                    <MenuItem onClick={handleClose}>Профиль</MenuItem>
-                    <MenuItem onClick={handleClose}>Мой аккаунт</MenuItem>
-                    <MenuItem onClick={handleClose}>Выйти из аккаунта</MenuItem>
-                </Menu>
+                <ButtonAppBar/>
             </Box>
 
 

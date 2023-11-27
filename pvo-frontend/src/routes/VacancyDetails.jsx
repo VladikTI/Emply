@@ -3,9 +3,17 @@ import {Typography, Button, Box} from '@mui/material';
 import {useParams} from "react-router-dom";
 import {boxStyle} from "./usersPage";
 import data from '../data.json';
-
+import SendIcon from '@mui/icons-material/Send';
+import {ButtonAppBar} from "./usersPage";
 const employees = Array.from(data.employees);
 
+const typographyStyle = {
+    border: "1px solid #ccc", // толщина границы элемента с цветом
+    borderRadius: "5px", // скругление углов
+    marginTop: "10px",
+    marginBottom: "10px",// отступ внизу элемента
+    padding: "10px", // расстояние между содержимым и границами
+}
 export default function VacancyDetails() {
     const {vacancyId} = useParams();
     //выискиваем вакансиюю по id и показыаем всю информацию о вакансии
@@ -17,6 +25,7 @@ export default function VacancyDetails() {
 
     return (
         <div>
+            <ButtonAppBar/>
             <Box style={boxStyle}>
                 <Typography variant="h4">Подробности о вакансии</Typography>
             </Box>
@@ -30,7 +39,7 @@ export default function VacancyDetails() {
                 <Typography variant="h5">Обязанности</Typography>
             </Box>
             <Box>
-                <Typography variant="h6">
+                <Typography variant="h6" style = {typographyStyle}>
                     {selectedVacancy.duty.map((obligation) => (
                         <div>
                             - {obligation}
@@ -44,7 +53,7 @@ export default function VacancyDetails() {
             <Box style={{
                 flex: "auto",
             }}>
-                <Typography variant="h6">
+                <Typography variant="h6" style = {typographyStyle}>
                     {selectedVacancy.requirements.map((requirement) => (
                         <div>
                             - {requirement}
@@ -56,7 +65,7 @@ export default function VacancyDetails() {
                 <Typography variant="h5">Условия</Typography>
             </Box>
             <Box>
-                <Typography variant="h6">
+                <Typography variant="h6" style = {typographyStyle}>
                     {selectedVacancy.conditions.map((condition) => (
                         <div>
                             - {condition}
@@ -71,7 +80,7 @@ export default function VacancyDetails() {
                     width: "100%"
                 }}
                         onClick={() => {
-                        }}>
+                        }} endIcon={<SendIcon />}>
                     Подать заявку
                 </Button>
             </Box>
