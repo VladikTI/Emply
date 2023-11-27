@@ -73,17 +73,21 @@ export default function VacancyDetails() {
                     ))}
                 </Typography>
             </Box>
-            <Box style={boxStyle}>
                 <Button style={{
+                    backgroundColor: '#060764', // Задаем цвет фона кнопки
+                    color: 'white', // Задаем цвет текста на кнопке (белый)
+                    marginRight: '10px', // отступ
                     cursor: "pointer", // меняет курсор на стрелку, говорящая что на этом месте ссылка
                     padding: "10px", // расстояние между содержимым и границами
-                    width: "100%"
+                    bottom: 0,
+                    position: "fixed",
+                    width:"100%"
+
                 }}
                         onClick={() => {
                         }} endIcon={<SendIcon />}>
                     Подать заявку
                 </Button>
-            </Box>
         </div>
     );
 }

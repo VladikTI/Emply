@@ -15,16 +15,16 @@ export let selectedID = 0;
 
 // стиль для кнопок
 export const buttonStyle = {
-    backgroundColor: '#060764', // Задаем цвет фона кнопки
-    color: 'white', // Задаем цвет текста на кнопке (белый)
+    backgroundColor: '#e0e1ff', // Задаем цвет фона кнопки
+    color: '#060764', // Задаем цвет текста на кнопке (белый)
     marginRight: '10px' // отступ
 };
 // стиль для box
 export const boxStyle = {
     height: "100%", // выоста
     flex: "auto", // меняет свой размер в зависимости от содержимого
-    backgroundColor:  '#060764', // Задаем цвет фона
-    color: 'white', // задаем цвет текста
+    backgroundColor:  '#e0e1ff', // Задаем цвет фона
+    color: '#060764', // задаем цвет текста
     textAlign:'center' // центрируем текст
 }
 
@@ -130,8 +130,8 @@ export  function ButtonAppBar() {
         <Box >
             <AppBar style = {{
                 position:"static",
-                backgroundColor: "#060764",
-                color: "white"
+                backgroundColor: "#e0e1ff",
+                color: "#060764"
             }}
             >
                 <Toolbar>
