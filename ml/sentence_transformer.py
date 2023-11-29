@@ -3,7 +3,7 @@
 
 # # Импорт данных и библиотек
 
-# In[24]:
+# In[30]:
 
 
 import pandas as pd
@@ -24,7 +24,7 @@ ank2 = pd.DataFrame.from_dict(pd.json_normalize(ank2), orient = "columns")
 
 # # Функция sentence_transformer (надо ее запустить)
 
-# In[29]:
+# In[31]:
 
 
 import asyncio
@@ -91,7 +91,7 @@ async def sentence_transformer(ank1, ank2):
     ank2['Языки.Английский'] = ank2['Языки.Английский'].astype(str).str.lower()
     ank1['soup'] = ank1.apply(lambda row: row['Опыт работы'] + row['Образование'] + row['Проекты'] + row['Дополнительная информация'] + row['Навыки.Язык программирования'] + row['Навыки.Фреймворки'] + row['Навыки.Базы данных'] + row['Навыки.Работа с API'] + row['Навыки.Инструменты'] + row['Языки.Русский'] + row['Языки.Английский'], axis=1)
     ank2['soup'] = ank2.apply(lambda row: row['Опыт работы'] + row['Образование'] + row['Проекты'] + row['Дополнительная информация'] + row['Навыки.Язык программирования'] + row['Навыки.Фреймворки'] + row['Навыки.Базы данных'] + row['Навыки.Работа с API'] + row['Навыки.Инструменты'] + row['Языки.Русский'] + row['Языки.Английский'], axis=1)
-    model = SentenceTransformer('all-MiniLM-L6-v2')
+    model = SentenceTransformer('bert-base-nli-mean-tokens')
     embeddings1 = model.encode(ank1_string, convert_to_tensor=True)
     embeddings2 = model.encode(ank2_string, convert_to_tensor=True)
     cosine_scores = util.cos_sim(embeddings1, embeddings2)
