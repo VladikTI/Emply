@@ -3,7 +3,7 @@
 
 # # Импорт данных и библиотек
 
-# In[30]:
+# In[24]:
 
 
 import pandas as pd
@@ -24,12 +24,13 @@ ank2 = pd.DataFrame.from_dict(pd.json_normalize(ank2), orient = "columns")
 
 # # Функция sentence_transformer (надо ее запустить)
 
-# In[31]:
+# In[26]:
 
 
 import asyncio
 import nest_asyncio
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer, util
+
 nest_asyncio.apply()
 loop = asyncio.new_event_loop()
 asyncio.set_event_loop(loop)
@@ -42,9 +43,11 @@ async def sentence_transformer(ank1, ank2):
     ank1 = ank1.applymap(lambda x: word_tokenize(x))
     ank2 = ank2.applymap(lambda x: word_tokenize(x))
     tokenizer = RegexpTokenizer(r'\w+')#first tokenizer
+    
     #data preprocessing
     ank1=ank1.applymap(str)
     ank2=ank2.applymap(str)
+    
     ank1['Опыт работы'] = ank1['Опыт работы'].map(tokenizer.tokenize)
     ank1['Образование'] = ank1['Образование'].map(tokenizer.tokenize)
     ank1['Проекты'] = ank1['Проекты'].map(tokenizer.tokenize)
@@ -67,6 +70,7 @@ async def sentence_transformer(ank1, ank2):
     ank2['Навыки.Инструменты'] = ank2['Навыки.Инструменты'].map(tokenizer.tokenize)
     ank2['Языки.Русский'] = ank2['Языки.Русский'].map(tokenizer.tokenize)
     ank2['Языки.Английский'] = ank2['Языки.Английский'].map(tokenizer.tokenize)
+    
     ank1['Опыт работы'] = ank1['Опыт работы'].astype(str).str.lower()
     ank1['Образование'] = ank1['Образование'].astype(str).str.lower()
     ank1['Проекты'] = ank1['Проекты'].astype(str).str.lower()
@@ -89,20 +93,27 @@ async def sentence_transformer(ank1, ank2):
     ank2['Навыки.Инструменты'] = ank2['Навыки.Инструменты'].astype(str).str.lower()
     ank2['Языки.Русский'] = ank2['Языки.Русский'].astype(str).str.lower()
     ank2['Языки.Английский'] = ank2['Языки.Английский'].astype(str).str.lower()
+    
     ank1['soup'] = ank1.apply(lambda row: row['Опыт работы'] + row['Образование'] + row['Проекты'] + row['Дополнительная информация'] + row['Навыки.Язык программирования'] + row['Навыки.Фреймворки'] + row['Навыки.Базы данных'] + row['Навыки.Работа с API'] + row['Навыки.Инструменты'] + row['Языки.Русский'] + row['Языки.Английский'], axis=1)
     ank2['soup'] = ank2.apply(lambda row: row['Опыт работы'] + row['Образование'] + row['Проекты'] + row['Дополнительная информация'] + row['Навыки.Язык программирования'] + row['Навыки.Фреймворки'] + row['Навыки.Базы данных'] + row['Навыки.Работа с API'] + row['Навыки.Инструменты'] + row['Языки.Русский'] + row['Языки.Английский'], axis=1)
+    
+    ank1_string = str(ank1['soup'])
+    ank2_string = str(ank2['soup'])
+    
     model = SentenceTransformer('bert-base-nli-mean-tokens')
     embeddings1 = model.encode(ank1_string, convert_to_tensor=True)
     embeddings2 = model.encode(ank2_string, convert_to_tensor=True)
     cosine_scores = util.cos_sim(embeddings1, embeddings2)
     cosine_scores = cosine_scores.flatten()
     perc_scores = cosine_scores * 100
+    
     final_df = pd.DataFrame()
     final_df['percentage'] = pd.Series(perc_scores)
     final_df['similarity'] = pd.Series(cosine_scores)
     final_df['Имя'] = ank1['Имя']
     final_df['Фамилия'] = ank1['Фамилия']
     final_df['Email'] = ank1['Контактная информация.Электронная почта']
+    
     return 'Similarity:' + str(final_df['percentage'].item()) + ' ' + '%'
 print(loop.run_until_complete(sentence_transformer(ank1,ank2)))
 loop.close()
