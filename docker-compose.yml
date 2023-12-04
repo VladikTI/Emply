@@ -14,7 +14,15 @@ services:
   backend:
     build: ./backend
     container_name: backend
-    command: uvicorn src.main:app --host 0.0.0.0 --port 80
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
     ports:
       - "80:80"
     depends_on:
