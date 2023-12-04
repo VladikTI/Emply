@@ -3,7 +3,7 @@
 
 # # Импорт данных и библиотек
 
-# In[24]:
+# In[1]:
 
 
 import pandas as pd
@@ -13,29 +13,18 @@ from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.tokenize import RegexpTokenizer
 import torch
-
-ank1 = open('анкета1.json',encoding="utf-8")
-ank2 = open('anketa.json', encoding="utf-8")
-ank1 = json.load(ank1)
-ank2 = json.load(ank2)
-ank1 = pd.DataFrame.from_dict(pd.json_normalize(ank1), orient = "columns")
-ank2 = pd.DataFrame.from_dict(pd.json_normalize(ank2), orient = "columns")
-
-
-# # Функция sentence_transformer (надо ее запустить)
-
-# In[26]:
-
-
 import asyncio
 import nest_asyncio
 from sentence_transformers import SentenceTransformer, util
 
-nest_asyncio.apply()
-loop = asyncio.new_event_loop()
-asyncio.set_event_loop(loop)
 
-async def sentence_transformer(ank1, ank2):
+# # Функция sentence_transformer (надо ее запустить)
+
+# In[2]:
+
+
+async def sentence_transformer(ank1:pd.DataFrame, ank2:pd.DataFrame) -> float:
+    #data preprocessing
     ank1 = ank1.fillna(value="")
     ank2 = ank2.fillna(value="")
     ank1 = ank1.applymap(str)
@@ -43,10 +32,8 @@ async def sentence_transformer(ank1, ank2):
     ank1 = ank1.applymap(lambda x: word_tokenize(x))
     ank2 = ank2.applymap(lambda x: word_tokenize(x))
     tokenizer = RegexpTokenizer(r'\w+')#first tokenizer
-    
-    #data preprocessing
-    ank1=ank1.applymap(str)
-    ank2=ank2.applymap(str)
+    ank1 = ank1.applymap(str)
+    ank2 = ank2.applymap(str)
     
     ank1['Опыт работы'] = ank1['Опыт работы'].map(tokenizer.tokenize)
     ank1['Образование'] = ank1['Образование'].map(tokenizer.tokenize)
@@ -107,6 +94,7 @@ async def sentence_transformer(ank1, ank2):
     cosine_scores = cosine_scores.flatten()
     perc_scores = cosine_scores * 100
     
+    #Окончательный датафрейм, в котором содержатся следующие столбцы - Процент, Схожесть без процента, Имя, Фамилия, Имейл
     final_df = pd.DataFrame()
     final_df['percentage'] = pd.Series(perc_scores)
     final_df['similarity'] = pd.Series(cosine_scores)
@@ -114,9 +102,19 @@ async def sentence_transformer(ank1, ank2):
     final_df['Фамилия'] = ank1['Фамилия']
     final_df['Email'] = ank1['Контактная информация.Электронная почта']
     
-    return 'Similarity:' + str(final_df['percentage'].item()) + ' ' + '%'
-print(loop.run_until_complete(sentence_transformer(ank1,ank2)))
-loop.close()
+    return final_df['percentage'].item()
+if __name__ == "__main__":
+    nest_asyncio.apply()
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    ank1 = open('анкета1.json',encoding="utf-8")
+    ank2 = open('анкета2.json', encoding="utf-8")
+    ank1 = json.load(ank1)
+    ank2 = json.load(ank2)
+    ank1 = pd.DataFrame.from_dict(pd.json_normalize(ank1), orient = "columns")
+    ank2 = pd.DataFrame.from_dict(pd.json_normalize(ank2), orient = "columns")
+    print(loop.run_until_complete(sentence_transformer(ank1,ank2)))
+    loop.close()
 
 
 # In[ ]:
