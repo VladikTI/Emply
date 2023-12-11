@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Typography, List, ListItem, ListItemText, Button,AppBar,Toolbar } from '@mui/material';
+import { Typography, List, ListItem, ListItemText, Button,AppBar,Toolbar,} from '@mui/material';
+import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper} from '@mui/material';
 import {Box ,Tab} from "@mui/material";
 import {Tabs} from "react-tabs";
 import { useNavigate } from "react-router-dom"
@@ -8,10 +9,14 @@ import data from '../data.json';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-//Титульник страницы
-document.title = 'Вакансии';
+import EmplyLogo from "../images/Emply_transparent.png"
+import {Solution} from "./TestForm";
 
-export let selectedID = 0;
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 // стиль для кнопок
 export const buttonStyle = {
@@ -28,8 +33,60 @@ export const boxStyle = {
     textAlign:'center' // центрируем текст
 }
 
+
+
 const employees = Array.from(data.employees);
 
+//функция для отрисовки таблицы с результатами тестов
+function GetTable() {
+    let VacancyList =[]
+    Solution.forEach((solution) => {
+        // Ищем объекты в employees, соответствующие текущему vacancy_id
+        const foundEmployee = employees.find((employee) => employee.id === solution.vacancy_id);
+
+        // Если найден, добавляем в VacancyList
+        if (foundEmployee) {
+            VacancyList.push(foundEmployee);
+        }
+    });
+    //VacancyList = employees.filter((employee) => employee.id === Solution.vacancy_id);
+    console.log("Прекрасно: ", VacancyList)
+    //console.log("Охуеть2: ", typeof (VacancyList))
+    //const TestResult = getRandomInt(50, 101)
+    if (typeof (VacancyList) == "undefined") {
+        return (
+            <div>
+                Вы не выбирали вакансии
+            </div>
+        )
+    } else {
+        return (
+
+            <TableContainer component={Paper}>
+                <Table sx={{minWidth: 650}} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Вакансии</TableCell>
+                            <TableCell align="right">Зарплата&nbsp;(g)</TableCell>
+                            <TableCell align="right">Компания&nbsp;(g)</TableCell>
+                            <TableCell align="right">Результат тестирования&nbsp;(g)</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {VacancyList.map((vacancy) => (
+                            <TableRow key={vacancy.id}>
+                                <TableCell align="right">{vacancy.post}</TableCell>
+                                <TableCell align="right">{vacancy.salary}</TableCell>
+                                <TableCell align="right">{vacancy.company}</TableCell>
+                                <TableCell align="right">{getRandomInt(50,101)}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        )
+    }
+}
 // функция для вывода содержимого каждого таба
 function GetTab({tabName}) {
     const navigate = useNavigate();
@@ -47,19 +104,19 @@ function GetTab({tabName}) {
                                 marginBottom: "10px",// отступ внизу элемента
                                 cursor: "pointer", // меняет курсор на стрелку, говорящая что на этом месте ссылка
                                 padding: "10px", // расстояние между содержимым и границами
+
                             }}
                             // теперь каждая вакансия кликабельна
                             //${employees.id} - добавляет в путь айдишник вакансии = параметр, указанный для пути в index.js
-                            onClick={() =>   {selectedID= employees.id;// устанавливаем id выбранной вакансии
-                                navigate(`/vacancy_details/${employees.id}`);
+                            onClick={() =>   {navigate(`/vacancy_details/${employees.id}`);
                             }}
                         >
                             <ListItemText
                                 primary={
                                     <div>
-                                        {employees.company} <br />
                                         Должность: {employees.post} <br />
-                                        Зарплата: {employees.salary}
+                                        Зарплата: {employees.salary}<br />
+                                        {employees.company}
                                     </div>
                                 }
                                 // join  = объединяет в одну строку с разделением
@@ -74,6 +131,10 @@ function GetTab({tabName}) {
                         </ListItem>
                     ))}
                 </List>
+            );
+        case 'vacancys':
+            return(
+                <GetTable/>
             );
         default:
             return(
@@ -136,7 +197,11 @@ export  function ButtonAppBar() {
             >
                 <Toolbar>
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                        EMPLY
+                        <img
+                            src={EmplyLogo} // Замените на путь или URL-адрес вашего логотипа Яндекса
+                            alt="Emply"
+                            style={{ maxWidth: '100%', maxHeight: '50px', marginTop: "10px"}}
+                        />
                     </Typography>
                     <AccountSettings/>
                 </Toolbar>
@@ -150,11 +215,10 @@ export  function ButtonAppBar() {
 export default function UsersPage() {
     const [selectedPanel, setSelectedOPanel] = useState('users')
     // навигация по вкладкам
-
+    console.log("Абоба: ",Solution)
     // в <list> выводим список вакансий employees с использованием map
     return (
         <div>
-
             <Box style = {{
                 height: "100%", // выоста
                 flex: "auto", // меняет свой размер в зависимости от содержимого
@@ -171,7 +235,7 @@ export default function UsersPage() {
                 <Typography variant="h4">Работа твоей мечты </Typography>
                 <Tabs>
                     <Tab label="Вакансии"  value="1" onClick={() => setSelectedOPanel('users')} />
-                    <Tab label="Поданные заявки" value="2" onClick={() => setSelectedOPanel('hui')} />
+                    <Tab label="Поданные заявки" value="2" onClick={() => setSelectedOPanel('vacancys')} />
                 </Tabs>
 
             </Box>

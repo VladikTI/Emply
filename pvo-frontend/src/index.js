@@ -12,6 +12,7 @@ import UserPrivateWrapper from './userPrivateWrapper';
 import AuthProvider from './contexts/authContext';
 import UsersPage from "./routes/usersPage";
 import VacancyDetails from "./routes/VacancyDetails";
+import TestForm from "./routes/TestForm";
 
 const dayjs = require('dayjs')
 const localizedFormat = require('dayjs/plugin/localizedFormat')
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
                 path: "vacancy_details/:vacancyId",
                 element: <VacancyDetails/>,
             },
+            {
+                path: "/exam/:vacancyId",
+                element: <TestForm/>
+            }
         ]
     },
     {
