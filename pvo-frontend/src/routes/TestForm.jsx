@@ -68,7 +68,7 @@ function ShowTest() {
                         console.log(newSolution)
                         Solution.push(newSolution)
                         console.log("Список: ", Solution)
-                        alert("ЗБС, жди результатов");
+                        alert("Результаты тестирования доступны на вкладке Поданные заявки");
                     }} endIcon={<SendIcon />}>
                 Отправить
             </Button>
@@ -78,7 +78,7 @@ function ShowTest() {
 
 }
 export default function TestForm(){
-
+    document.title = 'Тестирование';
     return(
         <div>
             <ButtonAppBar/>

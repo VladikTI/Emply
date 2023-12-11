@@ -12,11 +12,11 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import EmplyLogo from "../images/Emply_transparent.png"
 import {Solution} from "./TestForm";
 
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+// function getRandomInt(min, max) {
+//     min = Math.ceil(min);
+//     max = Math.floor(max);
+//     return Math.floor(Math.random() * (max - min + 1)) + min;
+// }
 
 // стиль для кнопок
 export const buttonStyle = {
@@ -39,6 +39,7 @@ const employees = Array.from(data.employees);
 
 //функция для отрисовки таблицы с результатами тестов
 function GetTable() {
+    const navigate = useNavigate();
     let VacancyList =[]
     Solution.forEach((solution) => {
         // Ищем объекты в employees, соответствующие текущему vacancy_id
@@ -66,19 +67,24 @@ function GetTable() {
                 <Table sx={{minWidth: 650}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Вакансии</TableCell>
-                            <TableCell align="right">Зарплата&nbsp;(g)</TableCell>
-                            <TableCell align="right">Компания&nbsp;(g)</TableCell>
-                            <TableCell align="right">Результат тестирования&nbsp;(g)</TableCell>
+                            <TableCell align="center">Вакансии</TableCell>
+                            <TableCell align="center">Зарплата&nbsp;</TableCell>
+                            <TableCell align="center">Компания&nbsp;</TableCell>
+                            <TableCell align="center">Результат тестирования&nbsp;</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {VacancyList.map((vacancy) => (
-                            <TableRow key={vacancy.id}>
-                                <TableCell align="right">{vacancy.post}</TableCell>
-                                <TableCell align="right">{vacancy.salary}</TableCell>
-                                <TableCell align="right">{vacancy.company}</TableCell>
-                                <TableCell align="right">{getRandomInt(50,101)}</TableCell>
+                            <TableRow key={vacancy.id}
+                                      onClick={() =>   {navigate(`/vacancy_details/${vacancy.id}`)}}
+                                      style={{
+                                          cursor: "pointer"
+                                      }}
+                            >
+                                <TableCell align="center">{vacancy.post}</TableCell>
+                                <TableCell align="center">{vacancy.salary}</TableCell>
+                                <TableCell align="center">{vacancy.company}</TableCell>
+                                <TableCell align="center">{vacancy.relative}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -214,6 +220,7 @@ export  function ButtonAppBar() {
 
 export default function UsersPage() {
     const [selectedPanel, setSelectedOPanel] = useState('users')
+    document.title = 'Вакансии';
     // навигация по вкладкам
     console.log("Абоба: ",Solution)
     // в <list> выводим список вакансий employees с использованием map

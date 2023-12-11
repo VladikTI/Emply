@@ -15,6 +15,7 @@ export const typographyStyle = {
     padding: "10px", // расстояние между содержимым и границами
 }
 export default function VacancyDetails() {
+    document.title = 'Подробности';
     const navigate = useNavigate();
     const {vacancyId} = useParams();
     //выискиваем вакансиюю по id и показыаем всю информацию о вакансии
