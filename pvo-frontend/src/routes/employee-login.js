@@ -56,7 +56,7 @@ export default function Login() {
                             Войти
                         </Button>
                         <Typography.Text style={{ marginTop: 8 }}>
-                            <Link to="/employee-login">Войти как сотрудник</Link>
+                            <Link to="/login">Войти на страницу компании</Link>
                         </Typography.Text>
                     </form>
                 </Col>

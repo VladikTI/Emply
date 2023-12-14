@@ -1,18 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ruRU } from '@mui/x-date-pickers/locales';
 
 import Login from "./routes/login";
-import ErrorPage from "./errorPage";
 import Company from "./routes/company";
-import UserPrivateWrapper from './userPrivateWrapper';
-import AuthProvider from './contexts/authContext';
 import UsersPage from "./routes/usersPage";
 import VacancyDetails from "./routes/VacancyDetails";
-import TestForm from "./routes/TestForm";
+import EmployeeLogin from "./routes/employee-login";
+import Start from "./routes/start";
+import HR from "./routes/hr";
 
 const dayjs = require('dayjs')
 const localizedFormat = require('dayjs/plugin/localizedFormat')
@@ -27,37 +26,32 @@ dayjs.locale('ru')
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Navigate to="apply"/>,
-        errorElement: <ErrorPage/>,  // new
+        element: <Start/>,
     },
     {
-        path: "/",
-        element: <UserPrivateWrapper/>,
-        errorElement: <ErrorPage/>,
-        children: [
-            {
-                path: "/company",
-                element: <Company/>,
-            },
-            {
-                path: "/search",
-                element: <UsersPage/>,
-            },
-            {
-                //:vacancyId - параметр идентификатор вакансии
-                path: "vacancy_details/:vacancyId",
-                element: <VacancyDetails/>,
-            },
-            {
-                path: "/exam/:vacancyId",
-                element: <TestForm/>
-            }
-        ]
+        path: "/company",
+        element: <Company/>,
+    },
+    {
+        path: "/search",
+        element: <UsersPage/>,
+    },
+    {
+        path: "vacancy_details/:vacancyId",
+        element: <VacancyDetails/>,
     },
     {
         path: "/login",
         element: <Login/>,
-    }
+    },
+    {
+        path: "/employee-login",
+        element: <EmployeeLogin/>,
+    },
+    {
+        path: "/employee-page",
+        element: <HR/>,
+    },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -104,9 +98,7 @@ const appTheme = createTheme(
 
 
 root.render(
-    <AuthProvider>
         <ThemeProvider theme={appTheme}>
             <RouterProvider router={router}/>
         </ThemeProvider>
-    </AuthProvider>
 );

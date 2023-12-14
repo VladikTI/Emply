@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import yandexLogo from '../images/yandex.png';
 import photo from '../images/avatar.png';
 import yandexMaps from '../images/yandexMaps.png';
 import yandexTaxi from '../images/yandexTaxi.png';
@@ -10,7 +9,7 @@ import {
     UserOutlined,
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme, Table } from 'antd';
-import { Button, Form, Input } from 'antd';
+import { Card, Row, Col } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
     return {
@@ -21,7 +20,7 @@ function getItem(label, key, icon, children) {
     };
 }
 const items = [
-    getItem('Моя Компания', '1', <DesktopOutlined />),
+    getItem('Мой Аккаунт', '1', <DesktopOutlined />),
     getItem('Сотрудники', 'sub1', <UserOutlined />, [
         getItem('Светлана Беглова', '2'),
         getItem('Кирилл Десятниченко', '3'),
@@ -35,89 +34,14 @@ const items = [
     getItem('Вакансии', '8', <FileOutlined />),
 ];
 
-const columns = [
-    {
-        title: 'ФИО',
-        dataIndex: 'name',
-        key: 'name',
-    },
-    {
-        title: 'Должность',
-        dataIndex: 'position',
-        key: 'position',
-    },
-];
 
 const App = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [selectedMenuItem, setSelectedMenuItem] = useState(items[0].key);
-    const [hrData, setHrData] = useState([
-        { key: '1', name: 'Светлана Беглова', position: 'Старший HR'},
-        { key: '2', name: 'Кирилл Десятниченко', position: 'Младший HR' },
-        { key: '3', name: 'Мария Сорокина', position: 'Младший HR' },
-        { key: '4', name: 'Ольга Глатко', position: 'Младший HR' },
-    ]);
-
-    const handleEmployeeClick = (employeeName) => {
-        let employeeData;
-        switch (employeeName) {
-            case 'user1':
-                employeeData = { key: '2', name: 'Светлана Беглова', position: 'Старший HR' };
-                break;
-            case 'user2':
-                employeeData = { key: '3', name: 'Кирилл Десятниченко', position: 'Младший HR' };
-                break;
-            case 'user3':
-                employeeData = { key: '4', name: 'Мария Сорокина', position: 'Младший HR' };
-                break;
-            case 'user4':
-                employeeData = { key: '5', name: 'Ольга Глатко', position: 'Младший HR' };
-                break;
-            default:
-                employeeData = null;
-        }
-
-        if (employeeData) {
-            setHrData((prevData) => [...prevData, employeeData]);
-        }
-    };
-
-
     const {
         token: { colorBgContainer },
     } = theme.useToken();
-    const [form] = Form.useForm();
-    const [isAddingEmployee, setIsAddingEmployee] = useState(false);
-    const [newEmployeeData, setNewEmployeeData] = useState({
-        firstName: '',
-        lastName: '',
-        position: '',
-        team: '',
-    });
 
-    const handleAddEmployee = () => {
-        // Получение данных из формы
-        const newEmployeeData = form.getFieldsValue();
-
-        // Реализуйте логику добавления нового сотрудника
-        // Например, отправка данных на сервер или локальное обновление данных
-        // ...
-
-        // Сброс формы после завершения добавления
-        const len = hrData.length + 1;
-        setHrData({
-            key: len.toString(),
-            name: newEmployeeData.firstName + ' ' + newEmployeeData.lastName,
-            position: newEmployeeData.position,
-        });
-        form.resetFields();
-        setIsAddingEmployee(false);
-        setNewEmployeeData({
-            firstName: '',
-            lastName: '',
-            position: '',
-        });
-    };
     return (
         <Layout
             style={{
@@ -132,9 +56,6 @@ const App = () => {
                     mode="inline"
                     onClick={({ key }) => {
                         setSelectedMenuItem(key);
-                        if (key === '2' || key === '3' || key === '4') {
-                            handleEmployeeClick(items.find((item) => item.key === key)?.label);
-                        }
                     }}
                 >
                     {items.map((item) => {
@@ -193,46 +114,21 @@ const App = () => {
                     >
                         {selectedMenuItem === '1' && (
                             <>
-                                <div style={{ textAlign: 'center' }}>
-                                    <img
-                                        src={yandexLogo} // Замените на путь или URL-адрес вашего логотипа Яндекса
-                                        alt="Яндекс Логотип"
-                                        style={{ maxWidth: '100%', maxHeight: '150px', marginBottom: '16px' }}
-                                    />
-                                </div>
-                                <h2>О Компании Яндекс</h2>
+                                <h2>Кирилл Десятниченко - Младший HR</h2>
+                                <img
+                                    src={photo} // Замените на путь или URL-адрес вашего логотипа Яндекса
+                                    alt="Пустой автар"
+                                    style={{ maxWidth: '100%', maxHeight: '150px', marginBottom: '16px' }}
+                                />
                                 <p>
-                                    Яндекс — российская технологическая компания, предоставляющая широкий спектр услуг и продуктов
-                                    в области интернета. Основана в 1997 году. Яндекс известен своими поисковыми системами,
-                                    онлайн-картами, сервисами такси, электронной коммерцией и другими технологическими решениями.
+                                    Имя: Кирилл Десятниченко
+                                    <br />
+                                    <br />
+                                    Должность: Младший HR
+                                    <br />
+                                    <br />
+                                    Команды: Яндекс.Такси, Яндекс.Карты
                                 </p>
-                                <h2>HR-сотрудники</h2>
-                                <Table dataSource={hrData} columns={columns} />
-                                {isAddingEmployee ? (
-                                    <>
-                                        <h2>Добавить сотрудника</h2>
-                                        <Form form={form}>
-                                            <Form.Item label="Имя" name="firstName">
-                                                <Input />
-                                            </Form.Item>
-                                            <Form.Item label="Фамилия" name="lastName">
-                                                <Input />
-                                            </Form.Item>
-                                            <Form.Item label="Должность" name="position">
-                                                <Input />
-                                            </Form.Item>
-                                            <Form.Item>
-                                                <Button type="primary" onClick={handleAddEmployee}>
-                                                    Добавить сотрудника
-                                                </Button>
-                                            </Form.Item>
-                                        </Form>
-                                    </>
-                                ) : (
-                                    <Button type="primary" onClick={() => setIsAddingEmployee(true)}>
-                                        Добавить сотрудника
-                                    </Button>
-                                )}
                             </>
                         )}
                         {selectedMenuItem === '2' && (
@@ -325,11 +221,7 @@ const App = () => {
                                     а также мобильные приложения к ним. Штаб-квартира компании находится в Москве.
                                 </p>
                                 <h2>HR-сотрудники</h2>
-                                <Table dataSource={[
-                                    { key: '1', name: 'Светлана Беглова', position: 'Старший HR' },
-                                    { key: '2', name: 'Кирилл Десятниченко', position: 'Младший HR' },
-                                    { key: '3', name: 'Мария Сорокина', position: 'Младший HR' },
-                                ]} columns={columns} />
+
                             </>
                         )}
                         {selectedMenuItem === '7' && (
@@ -346,14 +238,37 @@ const App = () => {
                                     прокладка маршрутов и панорамы улиц крупных и других городов.
                                 </p>
                                 <h2>HR-сотрудники</h2>
-                                <Table dataSource={[
-                                    { key: '1', name: 'Светлана Беглова', position: 'Старший HR' },
-                                    { key: '2', name: 'Кирилл Десятниченко', position: 'Младший HR' },
-                                    { key: '4', name: 'Ольга Глатко', position: 'Младший HR' },
-                                ]} columns={columns} />
+
                             </>
                         )}
-                        {selectedMenuItem === '8' && <p>Content for Вакансии</p>}
+                        {selectedMenuItem === '8' && (
+                            <>
+                                <h2>Доступные вакансии</h2>
+                                <Row gutter={[16, 16]}>
+                                    {/* Добавляем блоки для каждой вакансии */}
+                                    <Col xs={24} sm={12} md={12} lg={8}>
+                                        <Card
+                                            title="Frontend Разработчик"
+                                            extra={<a href="/vacancy/1">Подробнее</a>}
+                                            style={{ width: '100%' }}
+                                        >
+                                            <p>Ищем опытного Frontend Разработчика для создания удивительных пользовательских интерфейсов.</p>
+                                            <p style={{ fontWeight: 'bold' }}>от 100 000 руб.</p>
+                                        </Card>
+                                    </Col>
+                                    <Col xs={24} sm={12} md={12} lg={8}>
+                                        <Card
+                                            title="Frontend Разработчик"
+                                            extra={<a href="/vacancy/1">Подробнее</a>}
+                                            style={{ width: '100%' }}
+                                        >
+                                            <p>Ищем опытного Frontend Разработчика для создания удивительных пользовательских интерфейсов.</p>
+                                            <p style={{ fontWeight: 'bold' }}>от 100 000 руб.</p>
+                                        </Card>
+                                    </Col>
+                                </Row>
+                            </>
+                        )}
                     </div>
                 </Content>
                 <Footer
