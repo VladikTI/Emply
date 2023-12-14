@@ -13,6 +13,7 @@ import EmployeeLogin from "./routes/employee-login";
 import Start from "./routes/start";
 import HR from "./routes/hr";
 import TestForm from "./routes/TestForm";
+import HRD from "./routes/hr-details";
 const dayjs = require('dayjs')
 const localizedFormat = require('dayjs/plugin/localizedFormat')
 const dayOfYear = require('dayjs/plugin/dayOfYear')
@@ -55,7 +56,11 @@ const router = createBrowserRouter([
     {
         path: "/exam/:vacancyId",
         element: <TestForm/>
-    }
+    },
+    {
+        path: "/hr_details",
+        element: <HRD/>,
+    },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

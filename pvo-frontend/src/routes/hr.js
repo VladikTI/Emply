@@ -249,7 +249,7 @@ const App = () => {
                                     <Col xs={24} sm={12} md={12} lg={8}>
                                         <Card
                                             title="Frontend Разработчик"
-                                            extra={<a href="/vacancy/1">Подробнее</a>}
+                                            extra={<a href="/vacancy_details/1234">Подробнее</a>}
                                             style={{ width: '100%' }}
                                         >
                                             <p>Ищем опытного Frontend Разработчика для создания удивительных пользовательских интерфейсов.</p>
@@ -259,7 +259,7 @@ const App = () => {
                                     <Col xs={24} sm={12} md={12} lg={8}>
                                         <Card
                                             title="Frontend Разработчик"
-                                            extra={<a href="/vacancy/1">Подробнее</a>}
+                                            extra={<a href="/vacancy_details/12345">Подробнее</a>}
                                             style={{ width: '100%' }}
                                         >
                                             <p>Ищем опытного Frontend Разработчика для создания удивительных пользовательских интерфейсов.</p>
